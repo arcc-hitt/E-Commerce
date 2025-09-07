@@ -1,39 +1,29 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import { CartContext } from '../context/CartContext';
 
-function ProductCard({ product }) {
+function ProductCard({ title, price, imageUrl }) {
   const { addToCart } = useContext(CartContext);
 
   return (
-    <div className="col-sm-6 col-md-4 col-lg-3 mb-4">
-      <div className="card shadow-sm h-100 border-0 rounded-3">
-        <img
-          src={product.imageUrl}
-          className="card-img-top"
-          alt={product.title}
-        />
-        <div className="card-body text-center">
-          <h5 className="card-title">{product.title}</h5>
-          <p className="card-text text-muted">${product.price}</p>
-          <button
-            className="btn btn-primary btn-sm"
-            onClick={() => addToCart(product)}
-          >
-            Add to Cart
-          </button>
-        </div>
+    <div className="card h-100 shadow-sm">
+      <img
+        src={imageUrl}
+        alt={title}
+        className="card-img-top"
+        style={{ objectFit: 'cover', height: '250px' }}
+      />
+      <div className="card-body d-flex flex-column">
+        <h5 className="card-title">{title}</h5>
+        <p className="card-text">Price: ${price}</p>
+        <button
+          className="btn btn-primary mt-auto"
+          onClick={() => addToCart({ title, price, imageUrl })}
+        >
+          Add to Cart
+        </button>
       </div>
     </div>
   );
 }
-
-ProductCard.propTypes = {
-  product: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    imageUrl: PropTypes.string.isRequired,
-  }).isRequired,
-};
 
 export default ProductCard;
