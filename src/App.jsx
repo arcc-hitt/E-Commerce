@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import ProductsPage from './pages/ProductsPage';
 import AboutPage from './pages/AboutPage';
+import HomePage from './pages/HomePage';
 import Cart from './components/Cart';
 import Navbar from './components/Navbar';
 
@@ -14,7 +15,8 @@ function App() {
 
       <main>
         <Routes>
-          <Route path="/" element={<ProductsPage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/products" element={<ProductsPage />} />
           <Route path="/about" element={<AboutPage />} />
         </Routes>
       </main>

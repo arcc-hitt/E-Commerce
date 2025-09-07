@@ -19,6 +19,16 @@ function Navbar({ onCartClick }) {
           >
             Home
           </NavLink>
+
+          <NavLink
+            to="/products"
+            className={({ isActive }) =>
+              `nav-link d-inline-block mx-2 ${isActive ? 'text-warning' : 'text-white'}`
+            }
+          >
+            Store
+          </NavLink>
+
           <NavLink
             to="/about"
             className={({ isActive }) =>
@@ -27,6 +37,7 @@ function Navbar({ onCartClick }) {
           >
             About
           </NavLink>
+
           <button
             className="btn btn-outline-light position-relative ms-3"
             onClick={onCartClick}
