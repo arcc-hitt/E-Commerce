@@ -38,6 +38,16 @@ function Navbar({ onCartClick }) {
                         About
                     </NavLink>
 
+                    {/* New Contact NavLink */}
+                    <NavLink
+                        to="/contact"
+                        className={({ isActive }) =>
+                            `nav-link d-inline-block mx-2 ${isActive ? 'text-warning' : 'text-white'}`
+                        }
+                    >
+                        Contact
+                    </NavLink>
+
                     <NavLink
                         to="/movies"
                         className={({ isActive }) =>
