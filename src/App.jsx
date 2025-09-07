@@ -1,33 +1,22 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import ProductsPage from './pages/ProductsPage';
+import AboutPage from './pages/AboutPage';
 import Cart from './components/Cart';
-import { CartContext } from './context/CartContext';
+import Navbar from './components/Navbar';
 
 function App() {
   const [showCart, setShowCart] = useState(false);
-  const { cartCount } = useContext(CartContext);
 
   return (
     <>
-      <header className="bg-dark text-white py-3">
-        <div className="container d-flex justify-content-between align-items-center">
-          <h2 className="m-0">Ecom Store</h2>
-          <button
-            className="btn btn-outline-light position-relative"
-            onClick={() => setShowCart(true)}
-          >
-            <i className="bi bi-cart"></i>
-            {cartCount > 0 && (
-              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                {cartCount}
-              </span>
-            )}
-          </button>
-        </div>
-      </header>
+      <Navbar onCartClick={() => setShowCart(true)} />
 
       <main>
-        <ProductsPage />
+        <Routes>
+          <Route path="/" element={<ProductsPage />} />
+          <Route path="/about" element={<AboutPage />} />
+        </Routes>
       </main>
 
       <footer className="bg-light py-3 mt-5 border-top">
