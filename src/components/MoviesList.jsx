@@ -1,37 +1,59 @@
 import React, { memo } from "react";
 
-const MoviesList = memo(({ movies }) => {
-  if (!movies || movies.length === 0) {
-    return <p className="text-center text-gray-500">No movies found.</p>;
-  }
+const MoviesList = memo(({ movies, onDelete }) => {
+    if (!movies || movies.length === 0) {
+        return <p className="text-center text-muted">No movies found.</p>;
+    }
 
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-      {movies.map((movie) => (
-        <div
-          key={movie.episode_id}
-          className="p-6 bg-gray-900 text-white rounded-xl shadow-md"
-        >
-          <h2 className="text-xl font-bold mb-2">
-            Episode {movie.episode_id}: {movie.title}
-          </h2>
-          <p className="italic text-gray-300 mb-3">
-            {movie.opening_crawl.slice(0, 120)}...
-          </p>
-          <p className="text-sm">
-            <span className="font-semibold">Director:</span> {movie.director}
-          </p>
-          <p className="text-sm">
-            <span className="font-semibold">Producer:</span> {movie.producer}
-          </p>
-          <p className="text-sm">
-            <span className="font-semibold">Release Date:</span>{" "}
-            {movie.release_date}
-          </p>
+    return (
+        <div className="row g-4 mt-4">
+            {movies.map((movie) => (
+                <div className="col-md-4" key={movie.episode_id || movie.title}>
+                    <div className="card h-100 shadow-sm">
+                        <div className="card-body">
+                            <h5 className="card-title">
+                                Episode {movie.episode_id ? movie.episode_id : "N/A"}: {movie.title}
+                            </h5>
+                            <p className="card-text text-muted">
+                                {movie.opening_crawl
+                                    ? movie.opening_crawl.slice(0, 100) + "..."
+                                    : movie.openingText}
+                            </p>
+                            <ul className="list-unstyled small">
+                                {movie.director && (
+                                    <li>
+                                        <strong>Director:</strong> {movie.director}
+                                    </li>
+                                )}
+                                {movie.producer && (
+                                    <li>
+                                        <strong>Producer:</strong> {movie.producer}
+                                    </li>
+                                )}
+                                <li>
+                                    <strong>Release:</strong>{" "}
+                                    {movie.release_date ? movie.release_date : movie.releaseDate}
+                                </li>
+                            </ul>
+
+                            <div className="mt-3 d-flex justify-content-end">
+                                {/* Only show delete if we have an id (Firebase) */}
+                                {movie.id && typeof onDelete === "function" && (
+                                    <button
+                                        className="btn btn-sm btn-danger"
+                                        onClick={() => onDelete(movie.id)}
+                                        title="Delete movie"
+                                    >
+                                        Delete
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ))}
         </div>
-      ))}
-    </div>
-  );
+    );
 });
 
 export default MoviesList;
