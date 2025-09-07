@@ -1,18 +1,9 @@
-import React, { useState } from 'react';
-import { cartElements } from '../data/cartElements';
+import React, { useContext } from 'react';
+import { CartContext } from '../context/CartContext';
 import CartItem from './CartItem';
 
 function Cart({ show, onClose }) {
-  const [cart, setCart] = useState(cartElements);
-
-  const handleRemove = (title) => {
-    setCart((prevCart) => prevCart.filter((item) => item.title !== title));
-  };
-
-  const totalAmount = cart.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+  const { cart, removeFromCart, changeQuantity, totalAmount } = useContext(CartContext);
 
   return (
     <div
@@ -31,7 +22,12 @@ function Cart({ show, onClose }) {
           <>
             <ul className="list-group mb-3">
               {cart.map((item) => (
-                <CartItem key={item.title} item={item} onRemove={handleRemove} />
+                <CartItem
+                  key={item.title}
+                  item={item}
+                  onRemove={removeFromCart}
+                  onChangeQuantity={changeQuantity}
+                />
               ))}
             </ul>
             <div className="d-flex justify-content-between fw-bold">

@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import ProductsPage from './pages/ProductsPage';
 import Cart from './components/Cart';
+import { CartContext } from './context/CartContext';
 
 function App() {
   const [showCart, setShowCart] = useState(false);
+  const { cartCount } = useContext(CartContext);
 
   return (
     <>
@@ -14,7 +16,12 @@ function App() {
             className="btn btn-outline-light position-relative"
             onClick={() => setShowCart(true)}
           >
-            <i className="bi bi-cart"></i> Cart
+            <i className="bi bi-cart"></i>
+            {cartCount > 0 && (
+              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {cartCount}
+              </span>
+            )}
           </button>
         </div>
       </header>
@@ -29,7 +36,6 @@ function App() {
         </div>
       </footer>
 
-      {/* Cart Drawer */}
       <Cart show={showCart} onClose={() => setShowCart(false)} />
     </>
   );
