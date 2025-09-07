@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import ProductsPage from './pages/ProductsPage';
 import AboutPage from './pages/AboutPage';
 import HomePage from './pages/HomePage';
+import MoviesPage from './pages/MoviesPage';
 import Cart from './components/Cart';
 import Navbar from './components/Navbar';
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/movies" element={<MoviesPage />} />
         </Routes>
       </main>
 
