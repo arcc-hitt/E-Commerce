@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import ProductCard from '../components/ProductCard';
 
 function ProductsPage() {
@@ -7,9 +7,10 @@ function ProductsPage() {
   const [error, setError] = useState(null);
   const [retrying, setRetrying] = useState(false);
 
-  const retryTimerRef = useRef(null); // keep track of retry timer
+  const retryTimerRef = useRef(null);
 
-  async function fetchFilms() {
+  // Memoized fetch function so useEffect won't recreate it unnecessarily
+  const fetchFilms = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -31,27 +32,39 @@ function ProductsPage() {
       // schedule retry in 5 seconds
       retryTimerRef.current = setTimeout(fetchFilms, 5000);
     }
-  }
+  }, []);
 
-  function cancelRetry() {
+  // Cancel retry
+  const cancelRetry = useCallback(() => {
     if (retryTimerRef.current) {
       clearTimeout(retryTimerRef.current);
       retryTimerRef.current = null;
     }
     setRetrying(false);
     setError('Retry cancelled by user.');
-  }
+  }, []);
 
+  // Load movies automatically on page mount
   useEffect(() => {
     fetchFilms();
 
-    // cleanup on unmount
+    // cleanup
     return () => {
-      if (retryTimerRef.current) {
-        clearTimeout(retryTimerRef.current);
-      }
+      if (retryTimerRef.current) clearTimeout(retryTimerRef.current);
     };
-  }, []);
+  }, [fetchFilms]);
+
+  // Use useMemo to transform films only when films change
+  const products = useMemo(
+    () =>
+      films.map((film) => ({
+        id: film.episode_id,
+        title: film.title,
+        price: film.episode_id * 10,
+        imageUrl: `https://starwars-visualguide.com/assets/img/films/${film.episode_id}.jpg`,
+      })),
+    [films]
+  );
 
   if (loading && !retrying) {
     return <div className="container py-5 text-center">Loading films...</div>;
@@ -74,13 +87,9 @@ function ProductsPage() {
     <div className="container py-5">
       <h2 className="mb-4 text-center">Star Wars Films</h2>
       <div className="row g-4">
-        {films.map((film) => (
-          <div className="col-md-4" key={film.episode_id}>
-            <ProductCard
-              title={film.title}
-              price={film.episode_id * 10}
-              imageUrl={`https://starwars-visualguide.com/assets/img/films/${film.episode_id}.jpg`}
-            />
+        {products.map((p) => (
+          <div className="col-md-4" key={p.id}>
+            <ProductCard title={p.title} price={p.price} imageUrl={p.imageUrl} />
           </div>
         ))}
       </div>
