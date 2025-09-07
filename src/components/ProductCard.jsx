@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
 
 function ProductCard({ product }) {
@@ -8,13 +8,19 @@ function ProductCard({ product }) {
   return (
     <div className="col-sm-6 col-md-4 col-lg-3 mb-4">
       <div className="card shadow-sm h-100 border-0 rounded-3">
-        <img
-          src={product.imageUrl}
-          className="card-img-top"
-          alt={product.title}
-        />
+        <Link to={`/products/${product.id}`}>
+          <img
+            src={product.imageUrl || product.images[0]}
+            className="card-img-top"
+            alt={product.title}
+          />
+        </Link>
         <div className="card-body text-center">
-          <h5 className="card-title">{product.title}</h5>
+          <h5 className="card-title">
+            <Link to={`/products/${product.id}`} className="text-dark text-decoration-none">
+              {product.title}
+            </Link>
+          </h5>
           <p className="card-text text-muted">${product.price}</p>
           <button
             className="btn btn-primary btn-sm"
@@ -27,13 +33,4 @@ function ProductCard({ product }) {
     </div>
   );
 }
-
-ProductCard.propTypes = {
-  product: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    imageUrl: PropTypes.string.isRequired,
-  }).isRequired,
-};
-
 export default ProductCard;

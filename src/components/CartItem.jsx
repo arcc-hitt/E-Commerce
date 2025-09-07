@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function CartItem({ item, onRemove, onChangeQuantity }) {
+  const displayImage = item.imageUrl || (item.images && item.images[0]);
+
   return (
     <li className="list-group-item d-flex align-items-center justify-content-between">
       <div className="d-flex align-items-center">
         <img
-          src={item.imageUrl}
+          src={displayImage}
           alt={item.title}
           style={{ width: '50px', height: '50px', objectFit: 'cover' }}
           className="rounded me-3"
@@ -45,7 +47,8 @@ CartItem.propTypes = {
   item: PropTypes.shape({
     title: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
-    imageUrl: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string,     // optional now
+    images: PropTypes.array,        // optional fallback
     quantity: PropTypes.number.isRequired,
   }).isRequired,
   onRemove: PropTypes.func.isRequired,

@@ -4,9 +4,10 @@ import ProductsPage from './pages/ProductsPage';
 import AboutPage from './pages/AboutPage';
 import HomePage from './pages/HomePage';
 import MoviesPage from './pages/MoviesPage';
-import ContactPage from './pages/ContactPage'; // <- NEW
+import ContactPage from './pages/ContactPage';
 import Cart from './components/Cart';
 import Navbar from './components/Navbar';
+import ProductDetailPage from './pages/ProductDetailPage';
 
 function App() {
   const [showCart, setShowCart] = useState(false);
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products/:id" element={<ProductDetailPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} /> {/* <- NEW */}
           <Route path="/movies" element={<MoviesPage />} />
